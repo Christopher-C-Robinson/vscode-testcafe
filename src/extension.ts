@@ -407,8 +407,8 @@ class TestCafeTestController {
                         browserSpecificFlags.push(token);
                         i++;
                     } else {
-                        // Check if next token is a value (doesn't start with --)
-                        if (i + 1 < tokens.length && tokens[i + 1].indexOf('--') !== 0) {
+                        // Check if next token is a value (doesn't start with -- and is not :headless)
+                        if (i + 1 < tokens.length && tokens[i + 1].indexOf('--') !== 0 && tokens[i + 1] !== ':headless') {
                             // Consume both flag and its value
                             browserSpecificFlags.push(token);
                             browserSpecificFlags.push(tokens[i + 1]);
