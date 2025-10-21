@@ -371,7 +371,7 @@ class TestCafeTestController {
         
         // Check customArguments FIRST for :headless flag
         if(typeof(customArguments) === "string") {
-            hasCustomHeadless = this.hasHeadlessInCustomArgs(customArguments as string);
+            hasCustomHeadless = this.hasHeadlessInCustomArgs(customArguments);
         }
         
         // Apply headless from setting OR customArguments
