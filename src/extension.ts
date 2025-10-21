@@ -292,7 +292,14 @@ class TestCafeTestController {
     }
 
     private hasHeadlessInCustomArgs(customArguments: string): boolean {
-        return typeof(customArguments) === 'string' && customArguments.includes(':headless');
+        if (typeof customArguments !== 'string') return false;
+        // Split arguments by whitespace, handling simple quoted tokens
+        const tokens = customArguments.match(/(?:[^\s"']+|"(?:\\.|[^"])*"|'(?:\\.|[^'])*')+/g) || [];
+        return tokens.some(token => {
+            // Remove surrounding quotes if present
+            const unquoted = token.replace(/^['"]|['"]$/g, '');
+            return unquoted === ':headless';
+        });
     }
 
     private isBrowserSpecificFlag(arg: string): boolean {
