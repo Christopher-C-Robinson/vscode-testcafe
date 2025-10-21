@@ -365,14 +365,12 @@ class TestCafeTestController {
         // Parse custom arguments and separate browser-specific flags from TestCafe CLI flags
         var browserSpecificFlags: string[] = [];
         var testCafeFlags: string[] = [];
-        var hasCustomHeadless = false;
+        
         
         var customArguments = vscode.workspace.getConfiguration("testcafeTestRunner").get("customArguments");
         
         // Check customArguments FIRST for :headless flag
-        if(typeof(customArguments) === "string") {
-            hasCustomHeadless = this.hasHeadlessInCustomArgs(customArguments);
-        }
+        const hasCustomHeadless = typeof customArguments === "string" && this.hasHeadlessInCustomArgs(customArguments as string);
         
         // Apply headless from setting OR customArguments
         if(this.isHeadlessMode() || hasCustomHeadless)
