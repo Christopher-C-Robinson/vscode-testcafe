@@ -376,13 +376,12 @@ class TestCafeTestController {
         }
 
         // Build args array: browser (with flags), file, then TestCafe CLI flags
-        var args = [browserArg];
+        // Combine browser name with browser-specific flags as a single quoted argument
+        if (browserSpecificFlags.length > 0) {
+            browserArg = `${browserArg} ${browserSpecificFlags.join(' ')}`;
+        }
         
-        // Add browser-specific flags right after browser name
-        args = args.concat(browserSpecificFlags);
-        
-        // Add file path
-        args.push(filePath);
+        var args = [browserArg, filePath];
 
         if (type !== "file") {
             args.push("--" + type);
