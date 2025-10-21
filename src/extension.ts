@@ -370,7 +370,7 @@ class TestCafeTestController {
         var customArguments = vscode.workspace.getConfiguration("testcafeTestRunner").get("customArguments");
         
         // Check customArguments FIRST for :headless flag
-        const hasCustomHeadless = typeof customArguments === "string" && this.hasHeadlessInCustomArgs(customArguments as string);
+        const hasCustomHeadless = this.hasHeadlessInCustomArgs(customArguments);
         
         // Apply headless from setting OR customArguments
         if(this.isHeadlessMode() || hasCustomHeadless)
