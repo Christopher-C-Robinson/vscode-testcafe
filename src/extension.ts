@@ -328,7 +328,7 @@ class TestCafeTestController {
         
         // Check if the argument starts with any of the browser-specific flags
         for (const flag of browserFlags) {
-            if (arg.indexOf(flag) === 0) {
+            if (arg.startsWith(flag)) {
                 return true;
             }
         }

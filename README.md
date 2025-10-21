@@ -92,7 +92,8 @@ To run built-in commands, press `Ctrl+Shift+P` and type the command name:
     "testcafeTestRunner.customArguments": "--ignore-certificate-errors --allow-insecure-localhost --speed 0.1"
 }
 ```
-This will generate a command like: `testcafe edge:headless --ignore-certificate-errors --allow-insecure-localhost test.js --speed 0.1`
+This will generate a command like: `testcafe "edge:headless --ignore-certificate-errors --allow-insecure-localhost" test.js --speed 0.1`
+> **Note:** The browser name and browser-specific flags are combined into a single quoted argument.
     * Example with only TestCafe flags:
 ```
 {
