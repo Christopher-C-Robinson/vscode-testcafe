@@ -10,6 +10,7 @@ const BROWSER_ALIASES = ['ie', 'firefox', 'chrome', 'chrome-canary', 'chromium',
 const PORTABLE_BROWSERS = ["portableFirefox", "portableChrome"];
 const TESTCAFE_PATH = "./node_modules/testcafe/lib/cli/index.js";
 const HEADLESS_MODE_POSTFIX = ":headless";
+const ARG_TOKENIZE_PATTERN = /[^\s"]+|"([^"]*)"/g;
 
 var browserTools = require ('testcafe-browser-tools');
 let controller: TestCafeTestController = null;
@@ -291,6 +292,25 @@ class TestCafeTestController {
         }
     }
 
+    private tokenizeArguments(customArguments: string): string[] {
+        const tokens: string[] = [];
+        const argPattern = new RegExp(ARG_TOKENIZE_PATTERN);
+        let match;
+        do {
+            match = argPattern.exec(customArguments);
+            if (match !== null) { 
+                tokens.push(match[1] ? match[1] : match[0]);
+            }
+        } while (match !== null);
+        return tokens;
+    }
+
+    private hasHeadlessInCustomArgs(customArguments: string): boolean {
+        if (typeof customArguments !== 'string') return false;
+        const tokens = this.tokenizeArguments(customArguments);
+        return tokens.some(token => token === ':headless');
+    }
+
     private isBrowserSpecificFlag(arg: string): boolean {
         // List of common browser-specific flags that should be passed to the browser
         // These flags are not TestCafe CLI flags, but browser flags
@@ -350,30 +370,35 @@ class TestCafeTestController {
             const path = getPortableBrowserPath(browser.name);
             browserArg = `path:\`${path}\``;
         }
-        if(this.isHeadlessMode())
-            browserArg += HEADLESS_MODE_POSTFIX;
 
         // Parse custom arguments and separate browser-specific flags from TestCafe CLI flags
         var browserSpecificFlags: string[] = [];
         var testCafeFlags: string[] = [];
         
+        
         var customArguments = vscode.workspace.getConfiguration("testcafeTestRunner").get("customArguments");
+        
+        // Check customArguments FIRST for :headless flag
+        const hasCustomHeadless = this.hasHeadlessInCustomArgs(customArguments as string);
+        
+        // Apply headless from setting OR customArguments
+        if(this.isHeadlessMode() || hasCustomHeadless)
+            browserArg += HEADLESS_MODE_POSTFIX;
+        
         if(typeof(customArguments) === "string") {
             // First, collect all tokens
-            const tokens: string[] = [];
-            const argPattern = /[^\s"]+|"([^"]*)"/g;
-            let match;
-            do {
-                match = argPattern.exec(<string>customArguments);
-                if (match !== null) { 
-                    tokens.push(match[1] ? match[1] : match[0]);
-                }
-            } while (match !== null);
+            const tokens = this.tokenizeArguments(customArguments as string);
             
             // Now process tokens, handling flags with values
             let i = 0;
             while (i < tokens.length) {
                 const token = tokens[i];
+                
+                // Skip :headless token as it's already been applied to browserArg
+                if (token === ':headless') {
+                    i++;
+                    continue;
+                }
                 
                 // Check if this token is a browser-specific flag
                 if (this.isBrowserSpecificFlag(token)) {

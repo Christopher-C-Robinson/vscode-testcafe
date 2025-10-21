@@ -472,6 +472,7 @@
     },
     "devDependencies": {
         "@types/node": "^6.0.40",
+        "@types/vscode": "^1.15.0",
         "typescript": "^2.0.3",
         "vscode": "^1.1.5"
     },
