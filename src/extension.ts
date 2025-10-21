@@ -359,20 +359,46 @@ class TestCafeTestController {
         
         var customArguments = vscode.workspace.getConfiguration("testcafeTestRunner").get("customArguments");
         if(typeof(customArguments) === "string") {
+            // First, collect all tokens
+            const tokens: string[] = [];
             const argPattern = /[^\s"]+|"([^"]*)"/g;
             let match;
             do {
                 match = argPattern.exec(<string>customArguments);
                 if (match !== null) { 
-                    const arg = match[1] ? match[1] : match[0];
-                    // Check if this is a browser-specific flag
-                    if (this.isBrowserSpecificFlag(arg)) {
-                        browserSpecificFlags.push(arg);
-                    } else {
-                        testCafeFlags.push(arg);
-                    }
+                    tokens.push(match[1] ? match[1] : match[0]);
                 }
             } while (match !== null);
+            
+            // Now process tokens, handling flags with values
+            let i = 0;
+            while (i < tokens.length) {
+                const token = tokens[i];
+                
+                // Check if this token is a browser-specific flag
+                if (this.isBrowserSpecificFlag(token)) {
+                    // Check if flag already has value (e.g., --flag=value)
+                    if (token.indexOf('=') !== -1) {
+                        browserSpecificFlags.push(token);
+                        i++;
+                    } else {
+                        // Check if next token is a value (doesn't start with --)
+                        if (i + 1 < tokens.length && tokens[i + 1].indexOf('--') !== 0) {
+                            // Consume both flag and its value
+                            browserSpecificFlags.push(token);
+                            browserSpecificFlags.push(tokens[i + 1]);
+                            i += 2;
+                        } else {
+                            // Flag without value
+                            browserSpecificFlags.push(token);
+                            i++;
+                        }
+                    }
+                } else {
+                    testCafeFlags.push(token);
+                    i++;
+                }
+            }
         }
 
         // Build args array: browser (with flags), file, then TestCafe CLI flags
