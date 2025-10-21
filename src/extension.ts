@@ -291,6 +291,51 @@ class TestCafeTestController {
         }
     }
 
+    private isBrowserSpecificFlag(arg: string): boolean {
+        // List of common browser-specific flags that should be passed to the browser
+        // These flags are not TestCafe CLI flags, but browser flags
+        const browserFlags = [
+            '--ignore-certificate-errors',
+            '--allow-insecure-localhost',
+            '--disable-web-security',
+            '--disable-dev-shm-usage',
+            '--no-sandbox',
+            '--disable-gpu',
+            '--disable-setuid-sandbox',
+            '--disable-software-rasterizer',
+            '--disable-extensions',
+            '--disable-background-networking',
+            '--disable-background-timer-throttling',
+            '--disable-backgrounding-occluded-windows',
+            '--disable-breakpad',
+            '--disable-component-extensions-with-background-pages',
+            '--disable-features',
+            '--disable-ipc-flooding-protection',
+            '--disable-renderer-backgrounding',
+            '--force-color-profile',
+            '--metrics-recording-only',
+            '--mute-audio',
+            '--use-fake-ui-for-media-stream',
+            '--use-fake-device-for-media-stream',
+            '--autoplay-policy',
+            '--window-size',
+            '--window-position',
+            '--user-agent',
+            '--lang',
+            '--proxy-server',
+            '--proxy-bypass-list'
+        ];
+        
+        // Check if the argument starts with any of the browser-specific flags
+        for (const flag of browserFlags) {
+            if (arg.indexOf(flag) === 0) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
     public startTestRun(browser: IBrowser, filePath:string, type:string, name:string = "") {
         if (!type) {
             vscode.window.showErrorMessage(`No tests found. Position the cursor inside a test() function or fixture.`);
@@ -308,22 +353,44 @@ class TestCafeTestController {
         if(this.isHeadlessMode())
             browserArg += HEADLESS_MODE_POSTFIX;
 
-        var args = [browserArg, filePath];
-
+        // Parse custom arguments and separate browser-specific flags from TestCafe CLI flags
+        var browserSpecificFlags: string[] = [];
+        var testCafeFlags: string[] = [];
+        
         var customArguments = vscode.workspace.getConfiguration("testcafeTestRunner").get("customArguments");
         if(typeof(customArguments) === "string") {
             const argPattern = /[^\s"]+|"([^"]*)"/g;
             let match;
             do {
                 match = argPattern.exec(<string>customArguments);
-                if (match !== null) { args.push(match[1] ? match[1] : match[0]); }
+                if (match !== null) { 
+                    const arg = match[1] ? match[1] : match[0];
+                    // Check if this is a browser-specific flag
+                    if (this.isBrowserSpecificFlag(arg)) {
+                        browserSpecificFlags.push(arg);
+                    } else {
+                        testCafeFlags.push(arg);
+                    }
+                }
             } while (match !== null);
         }
+
+        // Build args array: browser (with flags), file, then TestCafe CLI flags
+        var args = [browserArg];
+        
+        // Add browser-specific flags right after browser name
+        args = args.concat(browserSpecificFlags);
+        
+        // Add file path
+        args.push(filePath);
 
         if (type !== "file") {
             args.push("--" + type);
             args.push(name);
         }
+
+        // Add TestCafe CLI flags
+        args = args.concat(testCafeFlags);
 
         const workspacePathOverride = this.getOverriddenWorkspacePath()
         if(this.isLiverRunner())
