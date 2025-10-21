@@ -404,7 +404,14 @@ class TestCafeTestController {
         // Build args array: browser (with flags), file, then TestCafe CLI flags
         // Combine browser name with browser-specific flags as a single quoted argument
         if (browserSpecificFlags.length > 0) {
-            browserArg = `${browserArg} ${browserSpecificFlags.join(' ')}`;
+            // Re-add quotes around values containing spaces to preserve them
+            const quotedFlags = browserSpecificFlags.map(flag => {
+                if (flag.indexOf(' ') !== -1 && flag.indexOf('--') !== 0) {
+                    return `"${flag}"`;
+                }
+                return flag;
+            });
+            browserArg = `${browserArg} ${quotedFlags.join(' ')}`;
         }
         
         var args = [browserArg, filePath];
