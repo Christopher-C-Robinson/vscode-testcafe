@@ -29,12 +29,22 @@
             "type": "object",
             "properties": {
                 "testcafeTestRunner.customArguments": {
-                    "type": [
-                        "string",
-                        "null"
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        {
+                            "type": "null"
+                        }
                     ],
                     "default": null,
-                    "description": "Specifies custom arguments for the TestCafe CLI. Browser-specific flags (e.g. --ignore-certificate-errors, --disable-features=...) are automatically placed inside the browser argument string. TestCafe CLI flags (e.g. --speed, -c) are appended after the test file path. Use ':headless' to enable headless mode for a single run without changing the global useHeadlessMode setting."
+                    "description": "Specifies custom arguments for the TestCafe CLI. Can be a string or an array of strings (array items are joined with spaces). Browser-specific flags (e.g. --ignore-certificate-errors, --disable-features=...) are automatically placed inside the browser argument string. TestCafe CLI flags (e.g. --speed, -c) are appended after the test file path. Use ':headless' to enable headless mode for a single run without changing the global useHeadlessMode setting."
                 },
                 "testcafeTestRunner.workspaceRoot": {
                     "type": [

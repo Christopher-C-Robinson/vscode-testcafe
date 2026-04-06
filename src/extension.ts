@@ -376,7 +376,10 @@ class TestCafeTestController {
         var testCafeFlags: string[] = [];
         
         
-        var customArguments = vscode.workspace.getConfiguration("testcafeTestRunner").get("customArguments");
+        const rawCustomArguments = vscode.workspace.getConfiguration("testcafeTestRunner").get("customArguments");
+        const customArguments: string | null = Array.isArray(rawCustomArguments)
+            ? (rawCustomArguments as string[]).join(' ')
+            : (rawCustomArguments as string | null);
         
         // Check customArguments FIRST for :headless flag
         const hasCustomHeadless = this.hasHeadlessInCustomArgs(customArguments as string);
