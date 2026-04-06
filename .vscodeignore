@@ -8,5 +8,9 @@ src/**
 AGENTS.md
 .github/**
 *.vsix
+.env
+.env.*
+.release-notes.md
+scripts/**
 tsconfig.json
 vsc-extension-quickstart.md

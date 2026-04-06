@@ -153,6 +153,6 @@ This will run tests in headless mode for this configuration, regardless of the g
 ## Maintenance
 
 * Pull requests are validated by GitHub Actions before merge.
-* Releases are published from GitHub release tags that match `package.json` version.
-* The release workflow uploads the VSIX to the GitHub Release and publishes to the Marketplace using the `VSCE_PAT` secret.
-* Protect the default branch in GitHub and require the CI workflow before merge.
+* Run the `Automated Release` workflow from the Actions tab to bump the version, update `CHANGELOG.md`, build the VSIX, create the GitHub Release, and publish to the Marketplace. The default bump is `patch`, so you can usually click Run without changing inputs.
+* The workflow uses the `VSCE_PAT` secret for Marketplace publishing and `GITHUB_TOKEN` for release commits and assets.
+* Protect the default branch in GitHub and either allow GitHub Actions to push the release commit or use a release token with equivalent permissions.

@@ -8,6 +8,7 @@ This is a maintained fork of Roman Resh's `vscode-testcafe` extension. The upstr
 ## Fork Notes
 - New Marketplace package: `ChristopherCRobinson.browser-tools-for-testcafe`
 - Rebranded from `TestCafe Test Runner` to `Browser Tools for TestCafe`
+- GitHub Actions now generates new release entries, updates the version, and publishes Marketplace releases automatically.
 
 ## [2.1.0]
 - Support portable versions of browsers

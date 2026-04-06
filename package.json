@@ -464,6 +464,7 @@
     },
     "scripts": {
         "build": "tsc -p ./",
+        "release:prepare": "node ./scripts/release.mjs",
         "vscode:prepublish": "npm run build",
         "compile": "tsc -watch -p ./",
         "test": "echo \"No tests configured\""
