@@ -1,15 +1,16 @@
 {
-    "name": "testcafe-test-runner",
-    "displayName": "TestCafe Test Runner",
-    "description": "Allows to run TestCafe tests directly from VS Code via context menu or built-in commands",
+    "name": "browser-tools-for-testcafe",
+    "displayName": "Browser Tools for TestCafe",
+    "description": "Maintained fork of Roman Resh's TestCafe Test Runner extension for running TestCafe tests directly from VS Code via context menu or built-in commands",
     "version": "2.1.0",
-    "publisher": "romanresh",
+    "publisher": "ChristopherCRobinson",
     "icon": "images/icon.png",
+    "license": "MIT",
     "engines": {
         "vscode": "^1.15.0"
     },
     "categories": [
-        "Other",
+        "Testing",
         "Debuggers"
     ],
     "keywords": [
@@ -462,10 +463,10 @@
         }
     },
     "scripts": {
-        "vscode:prepublish": "tsc -p ./",
+        "build": "tsc -p ./",
+        "vscode:prepublish": "npm run build",
         "compile": "tsc -watch -p ./",
-        "postinstall": "node ./node_modules/vscode/bin/install",
-        "test": "node ./node_modules/vscode/bin/test"
+        "test": "echo \"No tests configured\""
     },
     "dependencies": {
         "testcafe-browser-tools": "^1.6.5"
@@ -473,19 +474,13 @@
     "devDependencies": {
         "@types/node": "^6.0.40",
         "@types/vscode": "^1.15.0",
-        "typescript": "^2.0.3",
-        "vscode": "^1.1.5"
+        "typescript": "^2.0.3"
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/romanresh/vscode-testcafe"
+        "url": "https://github.com/Christopher-C-Robinson/vscode-testcafe"
     },
     "bugs": {
-        "url": "https://github.com/romanresh/vscode-testcafe/issues"
-    },
-    "__metadata": {
-        "id": "72f84f96-6dde-41a3-9fec-3ea137cde9d1",
-        "publisherDisplayName": "Roman Resh",
-        "publisherId": "69e83783-010b-45e6-b222-ef4ce6662aaa"
+        "url": "https://github.com/Christopher-C-Robinson/vscode-testcafe/issues"
     }
 }

@@ -1,7 +1,14 @@
 # Change Log
-All notable changes to the "testcafe-test-runner" extension will be documented in this file.
+All notable changes to the "Browser Tools for TestCafe" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+
+This is a maintained fork of Roman Resh's `vscode-testcafe` extension. The upstream project is no longer actively maintained, so this fork continues development and publishing under a new Marketplace id.
+
+## Fork Notes
+- New Marketplace package: `ChristopherCRobinson.browser-tools-for-testcafe`
+- Rebranded from `TestCafe Test Runner` to `Browser Tools for TestCafe`
+
 ## [2.1.0]
 - Support portable versions of browsers
 - Fix apostrophe symbol in test names [#37](https://github.com/romanresh/vscode-testcafe/pull/37). Thanks to [@markfknight](https://github.com/markfknight).

@@ -1,6 +1,10 @@
-# TestCafe Test Runner for Visual Studio Code
+# Browser Tools for TestCafe
 
 [TestCafe](https://testcafe.io/) is a pure Node.js end-to-end framework for testing web apps. This extension allows you to run TestCafe tests directly from VS Code.
+
+This repository is a maintained fork of Roman Resh's original `vscode-testcafe` / `TestCafe Test Runner` extension. The upstream project is no longer actively maintained, so this fork exists to keep the extension available and publishable.
+
+If you are migrating from the old Marketplace listing, install `ChristopherCRobinson.browser-tools-for-testcafe` instead of the upstream package.
 
 * Run a particular test, fixture, all tests in a file or directory via the context menu or built-in commands
 * Automatically detect browsers installed on the local machine
@@ -23,7 +27,8 @@ Use the `npm install testcafe-live` command.
 
 ## How to install extension
 
-Install the **TestCafe Test Runner** extension from VS Code Marketplace as described in the VS Code [documentation](https://code.visualstudio.com/docs/editor/extension-marketplace).
+Install the **Browser Tools for TestCafe** extension from VS Code Marketplace as described in the VS Code [documentation](https://code.visualstudio.com/docs/editor/extension-marketplace).
+If you are upgrading from the upstream extension, search for `Browser Tools for TestCafe` or install `ChristopherCRobinson.browser-tools-for-testcafe` directly.
 
 ## Features
 
@@ -119,7 +124,7 @@ This will run tests in headless mode for this configuration, regardless of the g
     * Example:
 ```
 {
-    "testcafeTestRunner.userLiveRunner": true
+    "testcafeTestRunner.useLiveRunner": true
 }
 ```
 * *testcafeTestRunner.useHeadlessMode* - Run tests in Google Chrome and Mozilla Firefox without any visible UI shell. Default value is `false`. Note: You can also enable headless mode on a per-run basis by including `:headless` in the `customArguments` setting.
@@ -140,6 +145,14 @@ This will run tests in headless mode for this configuration, regardless of the g
 
 ## Sources
 
-* [TestCafe Test Runner](https://github.com/romanresh/vscode-testcafe)
+* [Current fork](https://github.com/Christopher-C-Robinson/vscode-testcafe)
+* [Original upstream](https://github.com/romanresh/vscode-testcafe) by Roman Resh
 * [TestCafe](https://github.com/DevExpress/testcafe)
 * [TestCafe Live](https://github.com/DevExpress/testcafe-live)
+
+## Maintenance
+
+* Pull requests are validated by GitHub Actions before merge.
+* Releases are published from GitHub release tags that match `package.json` version.
+* The release workflow uploads the VSIX to the GitHub Release and publishes to the Marketplace using the `VSCE_PAT` secret.
+* Protect the default branch in GitHub and require the CI workflow before merge.

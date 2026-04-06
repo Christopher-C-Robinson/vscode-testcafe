@@ -5,5 +5,8 @@ test/**
 src/**
 **/*.map
 .gitignore
+AGENTS.md
+.github/**
+*.vsix
 tsconfig.json
 vsc-extension-quickstart.md
