@@ -10,6 +10,68 @@ This is a maintained fork of Roman Resh's `vscode-testcafe` extension. The upstr
 - Rebranded from `TestCafe Test Runner` to `Browser Tools for TestCafe`
 - GitHub Actions now generates new release entries, updates the version, and publishes Marketplace releases automatically.
 
+## [2.1.1] - 2026-04-06
+
+- first working version
+- Repeat Test Run (#5), refactoring, Fix error while extension is not activated but menu items are visible.
+- update changelog
+- add the capability to run a test file
+- update description
+- update descriptions
+- fix run on 'test/fixture' click
+- set rep link
+- fix tests debuggin in ^0.12.0-alpha1+
+- check installed browsers
+- docs
+- docs fixed
+- stable release
+- upd version
+- update readme
+- upd version
+- Implements #3
+- fix headers
+- Add support typescript
+- Add error message if testcafe is not found in wd
+- update to 1.1.0
+- fix for #15
+- Use TestCafe parser
+- use terminal
+- Revert "Use TestCafe parser"
+- revert testcafe parser
+- Add support for an alternate workspaceRoot.
+- Undo Version # change
+- workspaceRoot: use relative paths, small fixes
+- use new vscode api
+- fix #20
+- Update 'testcafe-browser-utils' to support Google Chrome Canary
+- Support Chrome Canary in context menus and command palette
+- new-version
+- v1.4.3 meta settings
+- Feature: Optional Use of TestCafe Live
+- Update Readme
+- upd lock
+- 1.4.4
+- letter mistake
+- Add MIT License
+- new livemode, headless mode
+- fixes comma in tests
+- bug: allow tests to be found when ` used
+- portable versions
+- Support quoted args in customArguments setting
+- Fixed some links
+- Refactor customArguments parsing in TestCafeTestController
+- Fix browser-specific flag positioning in TestCafe commands (#3)
+- Support headless mode via customArguments (not just global setting) (#5)
+- Adds AI agent instructions
+- Improves readability of Copilot instructions
+- Upgrades VS Code tasks to version 2.0.0
+- Fix headless flag duplication when placed after browser-specific flags in customArguments (#7)
+- Support browser-specific flags in customArguments via automatic flag separation (#9)
+- Add release automation and rebrand extension
+- Ignore environment variable files in version control
+- Add automated release workflow
+
+
 ## [2.1.0]
 - Support portable versions of browsers
 - Fix apostrophe symbol in test names [#37](https://github.com/romanresh/vscode-testcafe/pull/37). Thanks to [@markfknight](https://github.com/markfknight).
