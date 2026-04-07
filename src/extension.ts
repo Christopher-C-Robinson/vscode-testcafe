@@ -141,6 +141,13 @@ function getBrowserList(): Promise<string[]> {
 }
 
 function updateInstalledBrowserFlags(): Promise<void> {
+    for (const alias of BROWSER_ALIASES) {
+        vscode.commands.executeCommand('setContext', 'testcaferunner.' + alias + 'Installed', false);
+    }
+    for (const alias of PORTABLE_BROWSERS) {
+        vscode.commands.executeCommand('setContext', 'testcaferunner.' + alias + 'Installed', false);
+    }
+
     return getBrowserList()
         .then((installations: string[]) => {
             for (const alias of BROWSER_ALIASES) {
@@ -153,6 +160,19 @@ function updateInstalledBrowserFlags(): Promise<void> {
                     vscode.commands.executeCommand('setContext', 'testcaferunner.' + alias + 'Installed', true);
                 }
             }
+        });
+}
+
+function setReadyForUX(): Promise<void> {
+    return Promise.resolve(vscode.commands.executeCommand('setContext', 'testcaferunner.readyForUX', true))
+        .then(() => undefined);
+}
+
+function refreshBrowserList(): Promise<void> {
+    return updateInstalledBrowserFlags()
+        .then(() => setReadyForUX(), (error: Error) => {
+            vscode.window.showErrorMessage('Failed to update TestCafe browser list: ' + error.message);
+            return setReadyForUX();
         });
 }
 
@@ -173,28 +193,26 @@ export function activate(context: vscode.ExtensionContext): void {
     controller = new TestCafeTestController();
 
     vscode.commands.executeCommand('setContext', 'testcaferunner.canRerun', false);
+    vscode.commands.executeCommand('setContext', 'testcaferunner.readyForUX', false);
 
-    updateInstalledBrowserFlags()
-        .then(() => {
-            registerRunTestsCommands(context);
-            registerRunTestFileCommands(context);
+    registerRunTestsCommands(context);
+    registerRunTestFileCommands(context);
 
-            context.subscriptions.push(
-                vscode.commands.registerCommand('testcaferunner.updateBrowserList', () => {
-                    updateInstalledBrowserFlags();
-                })
-            );
+    context.subscriptions.push(
+        vscode.commands.registerCommand('testcaferunner.updateBrowserList', () => {
+            refreshBrowserList();
+        })
+    );
 
-            context.subscriptions.push(
-                vscode.commands.registerCommand('testcaferunner.repeatRun', () => {
-                    getController().repeatLastRun();
-                })
-            );
+    context.subscriptions.push(
+        vscode.commands.registerCommand('testcaferunner.repeatRun', () => {
+            getController().repeatLastRun();
+        })
+    );
 
-            context.subscriptions.push(getController());
+    context.subscriptions.push(getController());
 
-            vscode.commands.executeCommand('setContext', 'testcaferunner.readyForUX', true);
-        });
+    refreshBrowserList();
 }
 
 // this method is called when your extension is deactivated
