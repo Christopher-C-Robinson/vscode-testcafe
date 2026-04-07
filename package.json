@@ -486,7 +486,7 @@
         "bundle": "esbuild ./src/extension.ts --bundle --outfile=out/src/extension.js --external:vscode --format=cjs --platform=node --minify"
     },
     "dependencies": {
-        "testcafe-browser-tools": "^1.6.5"
+        "testcafe-browser-tools": "^2.0.26"
     },
     "devDependencies": {
         "@types/node": "^6.0.40",
