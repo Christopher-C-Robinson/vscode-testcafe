@@ -480,9 +480,10 @@
     "scripts": {
         "build": "tsc -p ./",
         "release:prepare": "node ./scripts/release.mjs",
-        "vscode:prepublish": "npm run build",
+        "vscode:prepublish": "npm run bundle",
         "compile": "tsc -watch -p ./",
-        "test": "echo \"No tests configured\""
+        "test": "echo \"No tests configured\"",
+        "bundle": "esbuild ./src/extension.ts --bundle --outfile=out/src/extension.js --external:vscode --format=cjs --platform=node --minify"
     },
     "dependencies": {
         "testcafe-browser-tools": "^1.6.5"
@@ -491,6 +492,7 @@
         "@types/node": "^6.0.40",
         "@types/vscode": "^1.15.0",
         "@vscode/vsce": "^3.7.1",
+        "esbuild": "^0.28.0",
         "typescript": "^2.0.3"
     },
     "repository": {
