@@ -38,7 +38,7 @@ jobs:
         run: rm -f ./*.vsix
 
       - name: Package extension
-        run: npx --yes @vscode/vsce@3.7.1 package
+        run: npx --no-install vsce package
 
       - name: Upload VSIX artifact
         uses: actions/upload-artifact@v4

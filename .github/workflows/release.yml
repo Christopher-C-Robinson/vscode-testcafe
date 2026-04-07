@@ -60,7 +60,7 @@ jobs:
         run: rm -f ./*.vsix
 
       - name: Package extension
-        run: npx --yes @vscode/vsce@3.7.1 package
+        run: npx --no-install vsce package
 
       - name: Commit release changes
         run: |
@@ -112,4 +112,30 @@ jobs:
           fi
 
       - name: Publish to Visual Studio Marketplace
-        run: npx --yes @vscode/vsce@3.7.1 publish -p "$VSCE_PAT"
+        run: |
+          MAX_ATTEMPTS=3
+          WAIT_SECONDS=60
+          RETRYABLE_ERROR_PATTERN='(429|too many requests|rate limit|rate-limited|concurrency[[:space:]/_-]*vsid)'
+
+          for attempt in $(seq 1 $MAX_ATTEMPTS); do
+            LOG_FILE="$RUNNER_TEMP/vsce-publish-$attempt.log"
+
+            if npx --no-install vsce publish 2>&1 | tee "$LOG_FILE"; then
+              echo "Published successfully on attempt $attempt"
+              break
+            fi
+
+            if grep -Eqi "$RETRYABLE_ERROR_PATTERN" "$LOG_FILE"; then
+              if [ "$attempt" -lt "$MAX_ATTEMPTS" ]; then
+                echo "Publish failed due to rate limiting on attempt $attempt. Retrying in ${WAIT_SECONDS}s..."
+                sleep "$WAIT_SECONDS"
+                WAIT_SECONDS=$((WAIT_SECONDS * 2))
+              else
+                echo "All $MAX_ATTEMPTS publish attempts failed due to rate limiting."
+                exit 1
+              fi
+            else
+              echo "Publish failed with a non-retryable error on attempt $attempt."
+              exit 1
+            fi
+          done
