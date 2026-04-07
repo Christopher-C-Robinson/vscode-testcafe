@@ -2,7 +2,7 @@
     "name": "browser-tools-for-testcafe",
     "displayName": "Browser Tools for TestCafe",
     "description": "Maintained fork of Roman Resh's TestCafe Test Runner extension for running TestCafe tests directly from VS Code via context menu or built-in commands",
-    "version": "2.1.1",
+    "version": "2.1.2",
     "publisher": "ChristopherCRobinson",
     "icon": "images/icon.png",
     "license": "MIT",
