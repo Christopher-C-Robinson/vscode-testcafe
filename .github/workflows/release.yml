@@ -60,7 +60,7 @@ jobs:
         run: rm -f ./*.vsix
 
       - name: Package extension
-        run: npx --yes @vscode/vsce@3.7.1 package
+        run: npx vsce package
 
       - name: Commit release changes
         run: |
@@ -112,4 +112,20 @@ jobs:
           fi
 
       - name: Publish to Visual Studio Marketplace
-        run: npx --yes @vscode/vsce@3.7.1 publish -p "$VSCE_PAT"
+        run: |
+          MAX_ATTEMPTS=3
+          WAIT_SECONDS=60
+          for attempt in $(seq 1 $MAX_ATTEMPTS); do
+            if npx vsce publish; then
+              echo "Published successfully on attempt $attempt"
+              break
+            fi
+            if [ "$attempt" -lt "$MAX_ATTEMPTS" ]; then
+              echo "Attempt $attempt failed. Retrying in ${WAIT_SECONDS}s..."
+              sleep "$WAIT_SECONDS"
+              WAIT_SECONDS=$((WAIT_SECONDS * 2))
+            else
+              echo "All $MAX_ATTEMPTS publish attempts failed."
+              exit 1
+            fi
+          done
