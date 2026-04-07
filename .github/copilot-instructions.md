@@ -1,4 +1,4 @@
-# VS Code TestCafe Test Runner - AI Agent Instructions
+# Browser Tools for TestCafe - AI Agent Instructions
 
 ## Project Overview
 

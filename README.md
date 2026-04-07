@@ -2,17 +2,24 @@
 
 [TestCafe](https://testcafe.io/) is a pure Node.js end-to-end framework for testing web apps. This extension allows you to run TestCafe tests directly from VS Code.
 
-This repository is a maintained fork of Roman Resh's original `vscode-testcafe` / `TestCafe Test Runner` extension. The upstream project is no longer actively maintained, so this fork exists to keep the extension available and publishable.
+This repository is a maintained fork of Roman Resh's original `vscode-testcafe` project. The upstream project is no longer actively maintained, so this fork exists to keep the extension available under distinct branding and a separate Marketplace identity.
+
+**Maintainer:** Christopher Robinson (`ChristopherCRobinson`)
+
+**Maintenance focus**
+- Keep the extension compatible with current VS Code releases.
+- Preserve the existing TestCafe browser detection, argument parsing, and debug workflow.
+- Keep Marketplace branding, metadata, and release automation distinct from the upstream project.
 
 If you are migrating from the old Marketplace listing, install `ChristopherCRobinson.browser-tools-for-testcafe` instead of the upstream package.
+
+![Browser Tools for TestCafe banner](./images/branding-banner.png)
 
 * Run a particular test, fixture, all tests in a file or directory via the context menu or built-in commands
 * Automatically detect browsers installed on the local machine
 * Repeat last test run
 * Debug tests
 * View test results in the `Debug Console` panel
-
-![Demo](./images/demo.gif)
 
 ## Requirements
 
@@ -36,8 +43,6 @@ If you are upgrading from the upstream extension, search for `Browser Tools for 
 
 While activating, the extension detects browsers installed on your machine. For each browser, the extension creates a corresponding command and an item in the context menu.
 
-![Editor context menu](./images/context-menu.png)
-
 ### Running a particular test
 
 To run a particular test, invoke the context menu when the cursor is placed within the test body and select `TestCafe: Run Test(s) in...` for the required browser.
@@ -49,8 +54,6 @@ To run all tests in a particular test fixture, invoke the context menu when the 
 ### Running all tests in a file
 
 To run all tests in the current file, invoke the context menu for this file in the Explorer panel and select `TestCafe: Run Test(s) in...` for the required browser.
-
-![Explorer context menu](./images/explorer-menu.png)
 
 ### Running all tests in a folder
 
@@ -65,13 +68,9 @@ This command is available after the first test run.
 
 To debug your test, place the `debugger` statement in test code and run this test via one of the commands. Test execution will be stopped once it reaches the `debugger` statement and you will be able to continue step-by-step.
 
-![Explorer context menu](./images/debugging.png)
-
 ### Test Result 
 
 You can view a test run report in the `Debug console`.
-
-![Failing test report](./images/test-report.png)
 
 
 ### Update browser list
