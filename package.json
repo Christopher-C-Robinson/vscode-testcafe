@@ -11,7 +11,8 @@
         "theme": "dark"
     },
     "engines": {
-        "vscode": "^1.15.0"
+        "vscode": "^1.15.0",
+        "node": ">=20"
     },
     "categories": [
         "Testing",

@@ -26,6 +26,8 @@ If you are migrating from the old Marketplace listing, install `ChristopherCRobi
 [TestCafe](https://github.com/DevExpress/testcafe) should be installed in your project as a local package. To install it, use the `npm install testcafe` command.
 For Mac OS, add `TestCafe` to dependencies in your `package.json` file. Your project should contain TestCafe modules in `node_modules\testcafe\...`.
 
+Development and release tooling requires Node.js 20 or newer because the workflow now uses `@vscode/vsce@3.7.1` from the local install.
+
 ### Optional
 This is only required if you would like the option to use the [TestCafe Live](https://github.com/DevExpress/testcafe-live) runner in place of 
 [TestCafe](https://github.com/DevExpress/testcafe). Note that TestCafe Live depends on TestCafe, but they are separate repositories. In other words, you need to install both TestCafe and TestCafe Live if you wish to use the TestCafe Live runner.
