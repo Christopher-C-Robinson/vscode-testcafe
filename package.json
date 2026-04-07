@@ -489,11 +489,11 @@
         "testcafe-browser-tools": "^2.0.26"
     },
     "devDependencies": {
-        "@types/node": "^6.0.40",
+        "@types/node": "^20.19.39",
         "@types/vscode": "^1.110.0",
         "@vscode/vsce": "^3.7.1",
         "esbuild": "^0.28.0",
-        "typescript": "^2.0.3"
+        "typescript": "^5.9.3"
     },
     "repository": {
         "type": "git",
