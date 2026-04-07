@@ -3,11 +3,12 @@ All notable changes to the "Browser Tools for TestCafe" extension will be docume
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-This is a maintained fork of Roman Resh's `vscode-testcafe` extension. The upstream project is no longer actively maintained, so this fork continues development and publishing under a new Marketplace id.
+This is a maintained fork of Roman Resh's original `vscode-testcafe` project. The upstream project is no longer actively maintained, so this fork continues development and publishing under a new Marketplace id.
 
 ## Fork Notes
 - New Marketplace package: `ChristopherCRobinson.browser-tools-for-testcafe`
-- Rebranded from `TestCafe Test Runner` to `Browser Tools for TestCafe`
+- Rebranded from the upstream listing to `Browser Tools for TestCafe`
+- README now uses a distinct branded banner instead of upstream screenshots
 - GitHub Actions now generates new release entries, updates the version, and publishes Marketplace releases automatically.
 
 ## [2.1.3] - 2026-04-07

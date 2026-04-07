@@ -1,7 +1,7 @@
 {
     "name": "browser-tools-for-testcafe",
     "displayName": "Browser Tools for TestCafe",
-    "description": "Maintained fork of Roman Resh's TestCafe Test Runner extension for running TestCafe tests directly from VS Code via context menu or built-in commands",
+    "description": "Browser Tools for TestCafe is a maintained VS Code extension for running TestCafe tests from the editor, Explorer, and command palette with browser detection, custom browser flags, and debugging support",
     "version": "2.1.3",
     "publisher": "ChristopherCRobinson",
     "icon": "images/icon.png",
