@@ -305,7 +305,15 @@ class TestCafeTestController {
         return tokens;
     }
 
-    private hasHeadlessInCustomArgs(customArguments: string): boolean {
+    private normalizeCustomArguments(customArguments: string | string[] | null | undefined): string | null {
+        if (Array.isArray(customArguments)) {
+            return (<string[]>customArguments).join(' ');
+        }
+
+        return typeof customArguments === 'string' ? customArguments : null;
+    }
+
+    private hasHeadlessInCustomArgs(customArguments: string | null): boolean {
         if (typeof customArguments !== 'string') return false;
         const tokens = this.tokenizeArguments(customArguments);
         return tokens.some(token => token === ':headless');
@@ -376,13 +384,11 @@ class TestCafeTestController {
         var testCafeFlags: string[] = [];
         
         
-        const rawCustomArguments = vscode.workspace.getConfiguration("testcafeTestRunner").get("customArguments");
-        const customArguments: string | null = Array.isArray(rawCustomArguments)
-            ? (rawCustomArguments as string[]).join(' ')
-            : (rawCustomArguments as string | null);
+        const rawCustomArguments = vscode.workspace.getConfiguration("testcafeTestRunner").get<string | string[] | null>("customArguments", null);
+        const customArguments = this.normalizeCustomArguments(rawCustomArguments);
         
         // Check customArguments FIRST for :headless flag
-        const hasCustomHeadless = this.hasHeadlessInCustomArgs(customArguments as string);
+        const hasCustomHeadless = this.hasHeadlessInCustomArgs(customArguments);
         
         // Apply headless from setting OR customArguments
         if(this.isHeadlessMode() || hasCustomHeadless)
@@ -390,7 +396,7 @@ class TestCafeTestController {
         
         if(typeof(customArguments) === "string") {
             // First, collect all tokens
-            const tokens = this.tokenizeArguments(customArguments as string);
+            const tokens = this.tokenizeArguments(customArguments);
             
             // Now process tokens, handling flags with values
             let i = 0;
