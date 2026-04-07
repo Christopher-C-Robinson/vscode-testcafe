@@ -312,7 +312,7 @@ class TestCafeTestController {
         return typeof alternateWorkspacePath === 'string' && alternateWorkspacePath.length > 0 ? alternateWorkspacePath : '';
     }
 
-    private isLiverRunner(): boolean {
+    private isLiveRunner(): boolean {
         return vscode.workspace.getConfiguration('testcafeTestRunner').get<boolean | null>('useLiveRunner', false) === true;
     }
 
@@ -486,7 +486,7 @@ class TestCafeTestController {
         args = args.concat(testCafeFlags);
 
         const workspacePathOverride = this.getOverriddenWorkspacePath();
-        if(this.isLiverRunner()) {
+        if(this.isLiveRunner()) {
             args.push('--live');
         }
 

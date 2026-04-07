@@ -44,7 +44,7 @@
                         }
                     ],
                     "default": null,
-                    "description": "Specifies custom arguments for the TestCafe CLI. Can be a string or an array of strings. Array items are joined with spaces before parsing, so values with spaces still need quoting or escaping inside the string. Browser-specific flags (e.g. --ignore-certificate-errors, --disable-features=...) are automatically placed inside the browser argument string. TestCafe CLI flags (e.g. --speed, -c) are appended after the test file path. Use ':headless' to enable headless mode for a single run without changing the global useHeadlessMode setting."
+                    "description": "Specifies custom arguments for the TestCafe CLI. Can be a string or an array of strings. In array form, items are joined with spaces before parsing, so keep each logical flag/value fragment together in the same item. Values with spaces can stay quoted inside that item. Browser-specific flags (e.g. --ignore-certificate-errors, --disable-features=...) are automatically placed inside the browser argument string. TestCafe CLI flags (e.g. --speed, -c) are appended after the test file path. Use ':headless' to enable headless mode for a single run without changing the global useHeadlessMode setting."
                 },
                 "testcafeTestRunner.workspaceRoot": {
                     "type": [
@@ -68,7 +68,7 @@
                         "null"
                     ],
                     "default": false,
-                    "description": "Run tests in Google Chrome and Mozilla Firefox without any visible UI shell. You can also enable headless mode on a per-run basis by including ':headless' in the customArguments setting."
+                    "description": "Run tests in Google Chrome and Mozilla Firefox without any visible UI shell. You can also enable headless mode on a per-run basis by including ':headless' in the customArguments setting, whether it is a string or an array of strings."
                 },
                 "testcafeTestRunner.portableFirefoxPath": {
                     "type": [
