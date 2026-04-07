@@ -11,6 +11,11 @@ This is a maintained fork of Roman Resh's original `vscode-testcafe` project. Th
 - README now uses a distinct branded banner instead of upstream screenshots
 - GitHub Actions now generates new release entries, updates the version, and publishes Marketplace releases automatically.
 
+## [3.0.2] - 2026-04-07
+
+- chore: Bundle extension with esbuild to eliminate VSIX file count warning (#19)
+
+
 ## [3.0.1] - 2026-04-07
 
 - chore: resolve Azure DevOps rate limiting in release pipeline (#17)
