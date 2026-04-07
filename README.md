@@ -13,7 +13,7 @@ This repository is a maintained fork of Roman Resh's original `vscode-testcafe` 
 
 If you are migrating from the old Marketplace listing, install `ChristopherCRobinson.browser-tools-for-testcafe` instead of the upstream package.
 
-![Browser Tools for TestCafe banner](./images/branding-banner.svg)
+![Browser Tools for TestCafe banner](./images/branding-banner.png)
 
 * Run a particular test, fixture, all tests in a file or directory via the context menu or built-in commands
 * Automatically detect browsers installed on the local machine
