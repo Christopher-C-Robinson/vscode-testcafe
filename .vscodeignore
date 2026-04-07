@@ -16,9 +16,4 @@ tsconfig.json
 vsc-extension-quickstart.md
 package-lock.json
 SECURITY.md
-node_modules/**/test/**
-node_modules/**/tests/**
-node_modules/**/*.md
-node_modules/**/*.txt
-node_modules/**/Makefile
-node_modules/**/.bin/**
+node_modules/**
