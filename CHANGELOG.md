@@ -11,6 +11,11 @@ This is a maintained fork of Roman Resh's original `vscode-testcafe` project. Th
 - README now uses a distinct branded banner instead of upstream screenshots
 - GitHub Actions now generates new release entries, updates the version, and publishes Marketplace releases automatically.
 
+## [3.0.1] - 2026-04-07
+
+- chore: resolve Azure DevOps rate limiting in release pipeline (#17)
+
+
 ## [3.0.0] - 2026-04-07
 
 - chore: Marketplace compliance — new icon, config title, gallery banner, v2.1.3 (#15)
