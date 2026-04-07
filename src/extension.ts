@@ -12,148 +12,164 @@ const TESTCAFE_PATH = "./node_modules/testcafe/lib/cli/index.js";
 const HEADLESS_MODE_POSTFIX = ":headless";
 const ARG_TOKENIZE_PATTERN = /[^\s"]+|"([^"]*)"/g;
 
-var browserTools = require ('testcafe-browser-tools');
-let controller: TestCafeTestController = null;
+const browserTools = require('testcafe-browser-tools');
+let controller: TestCafeTestController | null = null;
 
-function registerRunTestsCommands (context:vscode.ExtensionContext){
+function getController(): TestCafeTestController {
+    if (!controller) {
+        throw new Error('TestCafe Test Runner is not initialized.');
+    }
+
+    return controller;
+}
+
+function registerRunTestsCommands(context: vscode.ExtensionContext): void {
+    const activeController = getController();
+
     context.subscriptions.push(
         vscode.commands.registerCommand('testcaferunner.runTestsInIE', () => {
-            controller.runTests("ie");
+            activeController.runTests('ie');
         })
     );
     context.subscriptions.push(
         vscode.commands.registerCommand('testcaferunner.runTestsInFirefox', () => {
-            controller.runTests("firefox");
+            activeController.runTests('firefox');
         })
     );
     context.subscriptions.push(
         vscode.commands.registerCommand('testcaferunner.runTestsInChrome', () => {
-            controller.runTests("chrome");
+            activeController.runTests('chrome');
         })
     );
     context.subscriptions.push(
         vscode.commands.registerCommand('testcaferunner.runTestsInPortableFirefox', () => {
-            controller.runTests("portableFirefox", true);
+            activeController.runTests('portableFirefox', true);
         })
     );
     context.subscriptions.push(
         vscode.commands.registerCommand('testcaferunner.runTestsInPortableChrome', () => {
-            controller.runTests("portableChrome", true);
+            activeController.runTests('portableChrome', true);
         })
     );
     context.subscriptions.push(
         vscode.commands.registerCommand('testcaferunner.runTestsInChromeCanary', () => {
-            controller.runTests("chrome-canary");
+            activeController.runTests('chrome-canary');
         })
     );
     context.subscriptions.push(
         vscode.commands.registerCommand('testcaferunner.runTestsInChromium', () => {
-            controller.runTests("chromium");
+            activeController.runTests('chromium');
         })
     );
     context.subscriptions.push(
         vscode.commands.registerCommand('testcaferunner.runTestsInOpera', () => {
-            controller.runTests("opera");
+            activeController.runTests('opera');
         })
     );
     context.subscriptions.push(
         vscode.commands.registerCommand('testcaferunner.runTestsInSafari', () => {
-            controller.runTests("safari");
+            activeController.runTests('safari');
         })
     );
     context.subscriptions.push(
         vscode.commands.registerCommand('testcaferunner.runTestsInEdge', () => {
-            controller.runTests("edge");
+            activeController.runTests('edge');
         })
     );
 }
 
-function registerRunTestFileCommands (context:vscode.ExtensionContext){
+function registerRunTestFileCommands(context: vscode.ExtensionContext): void {
+    const activeController = getController();
+
     context.subscriptions.push(
-        vscode.commands.registerCommand('testcaferunner.runTestFileInIE', args => {
-            controller.startTestRun({name: "ie"}, args.fsPath, "file");
+        vscode.commands.registerCommand('testcaferunner.runTestFileInIE', (args: vscode.Uri) => {
+            activeController.startTestRun({ name: 'ie' }, args.fsPath, 'file');
         })
     );
     context.subscriptions.push(
-        vscode.commands.registerCommand('testcaferunner.runTestFileInFirefox', args => {
-            controller.startTestRun({name: "firefox"}, args.fsPath, "file");
+        vscode.commands.registerCommand('testcaferunner.runTestFileInFirefox', (args: vscode.Uri) => {
+            activeController.startTestRun({ name: 'firefox' }, args.fsPath, 'file');
         })
     );
     context.subscriptions.push(
-        vscode.commands.registerCommand('testcaferunner.runTestFileInChrome', args => {
-            controller.startTestRun({name: "chrome"}, args.fsPath, "file");
+        vscode.commands.registerCommand('testcaferunner.runTestFileInChrome', (args: vscode.Uri) => {
+            activeController.startTestRun({ name: 'chrome' }, args.fsPath, 'file');
         })
     );
     context.subscriptions.push(
-        vscode.commands.registerCommand('testcaferunner.runTestFileInPortableFirefox', args => {
-            controller.startTestRun({name: "portableFirefox", isPortable: true}, args.fsPath, "file", undefined);
+        vscode.commands.registerCommand('testcaferunner.runTestFileInPortableFirefox', (args: vscode.Uri) => {
+            activeController.startTestRun({ name: 'portableFirefox', isPortable: true }, args.fsPath, 'file', undefined);
         })
     );
     context.subscriptions.push(
-        vscode.commands.registerCommand('testcaferunner.runTestFileInPortableChrome', args => {
-            controller.startTestRun({name: "portableChrome", isPortable: true}, args.fsPath, "file", undefined);
+        vscode.commands.registerCommand('testcaferunner.runTestFileInPortableChrome', (args: vscode.Uri) => {
+            activeController.startTestRun({ name: 'portableChrome', isPortable: true }, args.fsPath, 'file', undefined);
         })
     );
     context.subscriptions.push(
-        vscode.commands.registerCommand('testcaferunner.runTestFileInChromeCanary', args => {
-            controller.startTestRun({name: "chrome-canary"}, args.fsPath, "file");
+        vscode.commands.registerCommand('testcaferunner.runTestFileInChromeCanary', (args: vscode.Uri) => {
+            activeController.startTestRun({ name: 'chrome-canary' }, args.fsPath, 'file');
         })
     );
     context.subscriptions.push(
-        vscode.commands.registerCommand('testcaferunner.runTestFileInChromium', args => {
-            controller.startTestRun({name: "chromium"}, args.fsPath, "file");
+        vscode.commands.registerCommand('testcaferunner.runTestFileInChromium', (args: vscode.Uri) => {
+            activeController.startTestRun({ name: 'chromium' }, args.fsPath, 'file');
         })
     );
     context.subscriptions.push(
-        vscode.commands.registerCommand('testcaferunner.runTestFileInOpera', args => {
-            controller.startTestRun({name: "opera"}, args.fsPath, "file");
+        vscode.commands.registerCommand('testcaferunner.runTestFileInOpera', (args: vscode.Uri) => {
+            activeController.startTestRun({ name: 'opera' }, args.fsPath, 'file');
         })
     );
     context.subscriptions.push(
-        vscode.commands.registerCommand('testcaferunner.runTestFileInSafari', args => {
-            controller.startTestRun({name: "safari"}, args.fsPath, "file");
+        vscode.commands.registerCommand('testcaferunner.runTestFileInSafari', (args: vscode.Uri) => {
+            activeController.startTestRun({ name: 'safari' }, args.fsPath, 'file');
         })
     );
     context.subscriptions.push(
-        vscode.commands.registerCommand('testcaferunner.runTestFileInEdge', args => {
-            controller.startTestRun({name: "edge"}, args.fsPath, "file");
+        vscode.commands.registerCommand('testcaferunner.runTestFileInEdge', (args: vscode.Uri) => {
+            activeController.startTestRun({ name: 'edge' }, args.fsPath, 'file');
         })
     );
 }
 
-function getBrowserList () {
+function getBrowserList(): Promise<string[]> {
     return browserTools.getInstallations()
-            .then(installations => {
-                return Object.keys(installations);
-            });
+        .then((installations: { [browser: string]: any }) => {
+            return Object.keys(installations);
+        });
 }
 
-function updateInstalledBrowserFlags (){
+function updateInstalledBrowserFlags(): Promise<void> {
     return getBrowserList()
-        .then(installations => {
-            for(var aliase of BROWSER_ALIASES){
-                if(installations.indexOf(aliase) !== -1 )
-                    vscode.commands.executeCommand('setContext', 'testcaferunner.' + aliase + 'Installed', true);
+        .then((installations: string[]) => {
+            for (const alias of BROWSER_ALIASES) {
+                if (installations.indexOf(alias) !== -1) {
+                    vscode.commands.executeCommand('setContext', 'testcaferunner.' + alias + 'Installed', true);
+                }
             }
-            for(var aliase of PORTABLE_BROWSERS) {
-                if(getPortableBrowserPath(aliase))
-                    vscode.commands.executeCommand('setContext', 'testcaferunner.' + aliase + 'Installed', true);
+            for (const alias of PORTABLE_BROWSERS) {
+                if (getPortableBrowserPath(alias)) {
+                    vscode.commands.executeCommand('setContext', 'testcaferunner.' + alias + 'Installed', true);
+                }
             }
         });
 }
 
 function getPortableBrowserPath(browser: string): string {
+    const configuration = vscode.workspace.getConfiguration('testcafeTestRunner');
+
     switch(browser) {
-        case "portableFirefox":
-            return vscode.workspace.getConfiguration("testcafeTestRunner").get("portableFirefoxPath");
-        case "portableChrome":
-            return vscode.workspace.getConfiguration("testcafeTestRunner").get("portableChromePath");
+        case 'portableFirefox':
+            return configuration.get<string>('portableFirefoxPath', '');
+        case 'portableChrome':
+            return configuration.get<string>('portableChromePath', '');
         default:
-            throw "Unknown portable browser";
+            throw new Error('Unknown portable browser');
     }
 }
 
-export function activate(context:vscode.ExtensionContext) {
+export function activate(context: vscode.ExtensionContext): void {
     controller = new TestCafeTestController();
 
     vscode.commands.executeCommand('setContext', 'testcaferunner.canRerun', false);
@@ -171,53 +187,53 @@ export function activate(context:vscode.ExtensionContext) {
 
             context.subscriptions.push(
                 vscode.commands.registerCommand('testcaferunner.repeatRun', () => {
-                    controller.repeatLastRun();
+                    getController().repeatLastRun();
                 })
             );
 
-            context.subscriptions.push(controller);
+            context.subscriptions.push(getController());
 
             vscode.commands.executeCommand('setContext', 'testcaferunner.readyForUX', true);
         });
 }
 
 // this method is called when your extension is deactivated
-export function deactivate() {
+export function deactivate(): void {
 }
 
 class TestCafeTestController {
-    lastBrowser: IBrowser;
-    lastFile:string;
-    lastType:string;
-    lastName:string;
+    private lastBrowser: IBrowser | null = null;
+    private lastFile: string = '';
+    private lastType: string = '';
+    private lastName: string = '';
 
-    public runTests(browser:string, isPortable: boolean = false) {
-        let editor = vscode.window.activeTextEditor;
+    public runTests(browser: string, isPortable: boolean = false): void {
+        const editor = vscode.window.activeTextEditor;
 
         if (!editor)
             return;
 
-        let doc = editor.document;
+        const doc = editor.document;
 
         if (doc.languageId !== "javascript" && doc.languageId !== "typescript")
             return;
 
-        var document = editor.document;
-        var selection = editor.selection;
+        const document = editor.document;
+        const selection = editor.selection;
 
         if(!selection || !selection.active)
             return;
 
-        var cursorPosition = document.getText(new vscode.Range(0, 0, selection.active.line, selection.active.character)).length;
-        var textBeforeSelection = document.getText(new vscode.Range(0, 0, selection.end.line + 1, 0));
+        const cursorPosition = document.getText(new vscode.Range(0, 0, selection.active.line, selection.active.character)).length;
+        const textBeforeSelection = document.getText(new vscode.Range(0, 0, selection.end.line + 1, 0));
 
-        var [type, name] = this.findTestOrFixtureName(textBeforeSelection, cursorPosition);
+        const [type, name] = this.findTestOrFixtureName(textBeforeSelection, cursorPosition);
 
-        this.startTestRun({name: browser, isPortable: isPortable}, document.fileName, type, name);
+        this.startTestRun({ name: browser, isPortable: isPortable }, document.fileName, type, name);
     }
 
-    public repeatLastRun() {
-        if (!this.lastBrowser || !this.lastFile || (this.lastType !== "file" && !this.lastName)) {
+    public repeatLastRun(): void {
+        if (!this.lastBrowser || !this.lastFile || !this.lastType || (this.lastType !== 'file' && !this.lastName)) {
             vscode.window.showErrorMessage(`Previous test is not found.`);
             return;
         }
@@ -225,77 +241,71 @@ class TestCafeTestController {
         this.startTestRun(this.lastBrowser, this.lastFile, this.lastType, this.lastName);
     }
 
-    private cropMatchString(matchString){
+    private cropMatchString(matchString: string): string {
         matchString = matchString.trim().replace(/;|\/\/|\/\*/, '');
         
         return matchString.trim();
     }
 
-    private isTest(matchString){    
+    private isTest(matchString: string): boolean {
         return this.cropMatchString(matchString).indexOf('test') === 0;
     }
 
-    private findTestOrFixtureName(text, cursorPosition):string[] {
-        var match = TEST_OR_FIXTURE_RE.exec(text);
-        var matches = [];
+    private findTestOrFixtureName(text: string, cursorPosition: number): [string, string] {
+        const testOrFixtureRe = new RegExp(TEST_OR_FIXTURE_RE);
+        const matches: ITestOrFixtureMatch[] = [];
+        let match: RegExpExecArray | null = testOrFixtureRe.exec(text);
 
         while (match !== null) {
-                var test = this.isTest(match[0]);
-                var name = test ? match[4] : match[2];
-                var realIndex = match.index + match[0].length - this.cropMatchString(match[0]).length;
+            const test = this.isTest(match[0]);
+            const rawName = test ? match[4] : match[2];
+            const name = (rawName || '').replace(CLEANUP_TEST_OR_FIXTURE_NAME_RE, '');
+            const realIndex = match.index + match[0].length - this.cropMatchString(match[0]).length;
 
-                matches.push({
-                    type: test ? 'test' : 'fixture',
-                    name: name.replace(CLEANUP_TEST_OR_FIXTURE_NAME_RE, ''),
-                    index: realIndex
-                });
+            matches.push({
+                type: test ? 'test' : 'fixture',
+                name: name,
+                index: realIndex
+            });
 
-            match = TEST_OR_FIXTURE_RE.exec(text);
+            match = testOrFixtureRe.exec(text);
         }
 
-        var lastOne = null;
+        let lastOne: ITestOrFixtureMatch | null = null;
 
         if (matches.length){
-            for(var i = matches.length - 1; i >= 0; i--){
-                if(cursorPosition >=  matches[i].index){
+            for (let i = matches.length - 1; i >= 0; i--){
+                if(cursorPosition >= matches[i].index){
                     lastOne = matches[i];
                     break;
                 }
             }
         }
 
-        if (lastOne)
+        if (lastOne) {
             return [lastOne.type, lastOne.name];
+        }
 
         return ['', ''];
     }
     
     private getOverriddenWorkspacePath(): string {
-        const alternateWorkspacePath = vscode.workspace.getConfiguration('testcafeTestRunner').get('workspaceRoot')
-        if (typeof(alternateWorkspacePath) === 'string' && alternateWorkspacePath.length > 0 ){
-            return alternateWorkspacePath
-        }
-        return ''
+        const alternateWorkspacePath = vscode.workspace.getConfiguration('testcafeTestRunner').get<string | null>('workspaceRoot', './');
+        return typeof alternateWorkspacePath === 'string' && alternateWorkspacePath.length > 0 ? alternateWorkspacePath : '';
     }
 
     private isLiverRunner(): boolean {
-        const useLiveRunner = vscode.workspace.getConfiguration('testcafeTestRunner').get('useLiveRunner')
-        if (typeof(useLiveRunner) === 'boolean' && useLiveRunner){
-            return useLiveRunner;
-        }
+        return vscode.workspace.getConfiguration('testcafeTestRunner').get<boolean | null>('useLiveRunner', false) === true;
     }
 
     private isHeadlessMode(): boolean {
-        const useHeadlessMode = vscode.workspace.getConfiguration('testcafeTestRunner').get('useHeadlessMode')
-        if (typeof(useHeadlessMode) === 'boolean' && useHeadlessMode){
-            return useHeadlessMode;
-        }
+        return vscode.workspace.getConfiguration('testcafeTestRunner').get<boolean | null>('useHeadlessMode', false) === true;
     }
 
     private tokenizeArguments(customArguments: string): string[] {
         const tokens: string[] = [];
         const argPattern = new RegExp(ARG_TOKENIZE_PATTERN);
-        let match;
+        let match: RegExpExecArray | null;
         do {
             match = argPattern.exec(customArguments);
             if (match !== null) { 
@@ -307,7 +317,7 @@ class TestCafeTestController {
 
     private normalizeCustomArguments(customArguments: string | string[] | null | undefined): string | null {
         if (Array.isArray(customArguments)) {
-            return (<string[]>customArguments).join(' ');
+            return customArguments.join(' ');
         }
 
         return typeof customArguments === 'string' ? customArguments : null;
@@ -364,7 +374,7 @@ class TestCafeTestController {
         return false;
     }
 
-    public startTestRun(browser: IBrowser, filePath:string, type:string, name:string = "") {
+    public startTestRun(browser: IBrowser, filePath: string, type: string, name: string = ''): void {
         if (!type) {
             vscode.window.showErrorMessage(`No tests found. Position the cursor inside a test() function or fixture.`);
             return;
@@ -374,16 +384,15 @@ class TestCafeTestController {
         this.lastFile = filePath;
         this.lastType = type;
         this.lastName = name;
-        if(browser.isPortable) {
-            const path = getPortableBrowserPath(browser.name);
-            browserArg = `path:\`${path}\``;
+        if (browser.isPortable) {
+            const portableBrowserPath = getPortableBrowserPath(browser.name);
+            browserArg = `path:\`${portableBrowserPath}\``;
         }
 
         // Parse custom arguments and separate browser-specific flags from TestCafe CLI flags
-        var browserSpecificFlags: string[] = [];
-        var testCafeFlags: string[] = [];
-        
-        
+        const browserSpecificFlags: string[] = [];
+        const testCafeFlags: string[] = [];
+
         const rawCustomArguments = vscode.workspace.getConfiguration("testcafeTestRunner").get<string | string[] | null>("customArguments", null);
         const customArguments = this.normalizeCustomArguments(rawCustomArguments);
         
@@ -448,9 +457,9 @@ class TestCafeTestController {
             browserArg = `${browserArg} ${quotedFlags.join(' ')}`;
         }
         
-        var args = [browserArg, filePath];
+        let args = [browserArg, filePath];
 
-        if (type !== "file") {
+        if (type !== 'file') {
             args.push("--" + type);
             args.push(name);
         }
@@ -458,18 +467,21 @@ class TestCafeTestController {
         // Add TestCafe CLI flags
         args = args.concat(testCafeFlags);
 
-        const workspacePathOverride = this.getOverriddenWorkspacePath()
-        if(this.isLiverRunner())
-            args.push("--live");
-        var testCafePath = path.resolve(vscode.workspace.rootPath, workspacePathOverride, TESTCAFE_PATH);
+        const workspacePathOverride = this.getOverriddenWorkspacePath();
+        if(this.isLiverRunner()) {
+            args.push('--live');
+        }
+
+        const workspaceFolder = vscode.workspace.workspaceFolders ? vscode.workspace.workspaceFolders[0] : undefined;
+        const workspaceRoot = workspaceFolder ? workspaceFolder.uri.fsPath : (vscode.workspace.rootPath || '');
+        const testCafePath = path.resolve(workspaceRoot, workspacePathOverride, TESTCAFE_PATH);
         if(!fs.existsSync(testCafePath)) {
             vscode.window.showErrorMessage(`TestCafe package is not found at path ${testCafePath}. Install the testcafe package in your working directory or set the "testcafeTestRunner.workspaceRoot" property.`);
             return;
         }
         
-        var workingDirectory = path.resolve(vscode.workspace.rootPath, workspacePathOverride);
-        var wsFolder = vscode.workspace.workspaceFolders ? vscode.workspace.workspaceFolders[0] : undefined;
-        vscode.debug.startDebugging(wsFolder, {
+        const workingDirectory = path.resolve(workspaceRoot, workspacePathOverride);
+        vscode.debug.startDebugging(workspaceFolder, {
             name: "Launch current test(s) with TestCafe",
             request: "launch",
             type: "node",
@@ -485,7 +497,7 @@ class TestCafeTestController {
         vscode.commands.executeCommand('setContext', 'testcaferunner.canRerun', true);
     }
 
-    dispose() {
+    public dispose(): void {
 
     }
 }
@@ -494,4 +506,10 @@ class TestCafeTestController {
 interface IBrowser {
     name: string;
     isPortable?: boolean;
+}
+
+interface ITestOrFixtureMatch {
+    type: string;
+    name: string;
+    index: number;
 }
