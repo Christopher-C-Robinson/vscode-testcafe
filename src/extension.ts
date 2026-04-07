@@ -17,7 +17,7 @@ let controller: TestCafeTestController | null = null;
 
 function getController(): TestCafeTestController {
     if (!controller) {
-        throw new Error('TestCafe Test Runner is not initialized.');
+        throw new Error('Browser Tools for TestCafe is not initialized.');
     }
 
     return controller;

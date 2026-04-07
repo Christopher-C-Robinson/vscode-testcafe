@@ -10,6 +10,13 @@ This is a maintained fork of Roman Resh's `vscode-testcafe` extension. The upstr
 - Rebranded from `TestCafe Test Runner` to `Browser Tools for TestCafe`
 - GitHub Actions now generates new release entries, updates the version, and publishes Marketplace releases automatically.
 
+## [2.1.3] - 2026-04-07
+
+- chore: replace icon with a completely new design for Marketplace compliance
+- chore: rename configuration section title from "TestCafe Test Runner configuration" to "Browser Tools for TestCafe configuration"
+- chore: update internal error message to use the new extension name
+- chore: add Marketplace gallery banner with distinct branding colors
+
 ## [2.1.2] - 2026-04-07
 
 - feat: add security and quality baseline (Dependabot, CodeQL, audit, SECURITY.md, templates) (#11)
