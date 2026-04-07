@@ -115,7 +115,7 @@ jobs:
         run: |
           MAX_ATTEMPTS=3
           WAIT_SECONDS=60
-          RETRYABLE_ERROR_PATTERN='(429|too many requests|rate limit|rate-limited)'
+          RETRYABLE_ERROR_PATTERN='(429|too many requests|rate limit|rate-limited|concurrency[[:space:]/_-]*vsid)'
 
           for attempt in $(seq 1 $MAX_ATTEMPTS); do
             LOG_FILE="$RUNNER_TEMP/vsce-publish-$attempt.log"
