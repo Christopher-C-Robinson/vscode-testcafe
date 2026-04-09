@@ -11,6 +11,19 @@ This is a maintained fork of Roman Resh's original `vscode-testcafe` project. Th
 - README now uses a distinct branded banner instead of upstream screenshots
 - GitHub Actions now generates new release entries, updates the version, and publishes Marketplace releases automatically.
 
+## [3.0.3] - 2026-04-09
+
+- Bump actions/checkout from 4 to 6 (#20)
+- Bump actions/setup-node from 4 to 6 (#21)
+- Bump actions/upload-artifact from 4 to 7 (#22)
+- Bump github/codeql-action from 3 to 4 (#23)
+- Bump testcafe-browser-tools from 1.6.8 to 2.0.26 (#26)
+- Bump minimist in the npm_and_yarn group across 1 directory (#28)
+- Bump @types/vscode from 1.15.0 to 1.110.0 (#24)
+- Bump @types/node from 6.14.6 to 25.5.2 (#25)
+- Bump typescript from 2.9.2 to 6.0.2 (#27)
+
+
 ## [3.0.2] - 2026-04-07
 
 - chore: Bundle extension with esbuild to eliminate VSIX file count warning (#19)
