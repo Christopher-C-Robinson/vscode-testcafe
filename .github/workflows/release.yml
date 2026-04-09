@@ -113,9 +113,10 @@ jobs:
 
       - name: Publish to Visual Studio Marketplace
         run: |
+          set -o pipefail
           MAX_ATTEMPTS=3
           WAIT_SECONDS=60
-          RETRYABLE_ERROR_PATTERN='(429|too many requests|rate limit|rate-limited|concurrency[[:space:]/_-]*vsid)'
+          RETRYABLE_ERROR_PATTERN='(429|too many requests|rate limit|rate-limited|concurrency.*vsid|exceeding usage)'
 
           for attempt in $(seq 1 $MAX_ATTEMPTS); do
             LOG_FILE="$RUNNER_TEMP/vsce-publish-$attempt.log"
@@ -136,6 +137,54 @@ jobs:
               fi
             else
               echo "Publish failed with a non-retryable error on attempt $attempt."
+              cat "$LOG_FILE"
               exit 1
             fi
           done
+
+      - name: Cleanup on publish failure
+        if: failure() && steps.meta.outputs.tag != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="${{ steps.meta.outputs.tag }}"
+          VERSION="${{ steps.meta.outputs.version }}"
+
+          # Validate TAG format to prevent unintended shell operations.
+          if ! echo "$TAG" | grep -qE '^v[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "Unexpected tag format: '$TAG'. Skipping cleanup."
+            exit 0
+          fi
+
+          echo "Rolling back failed release for $TAG..."
+
+          # Remove the GitHub Release so the next attempt can recreate it cleanly.
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Deleting GitHub release $TAG..."
+            gh release delete "$TAG" --yes || true
+          fi
+
+          # Remove the remote tag so the next attempt can push a fresh one.
+          if git ls-remote --tags origin | grep -qF "refs/tags/${TAG}"; then
+            echo "Deleting remote tag $TAG..."
+            git push --delete origin "refs/tags/$TAG" || true
+          fi
+
+          # Revert the release commit on the default branch so the changelog and
+          # package version are reset, preventing duplicate entries on the next run.
+          DEFAULT_BRANCH="${{ github.event.repository.default_branch }}"
+          git fetch origin "${DEFAULT_BRANCH}:refs/remotes/origin/${DEFAULT_BRANCH}"
+          REMOTE_SHA="$(git rev-parse "origin/${DEFAULT_BRANCH}")"
+          REMOTE_HEAD_MSG="$(git log -1 --pretty=%s "$REMOTE_SHA" 2>/dev/null || true)"
+          EXPECTED_COMMIT_MSG="chore(release): v${VERSION}"
+
+          if [ "$REMOTE_HEAD_MSG" = "$EXPECTED_COMMIT_MSG" ]; then
+            echo "Reverting release commit '$EXPECTED_COMMIT_MSG' on ${DEFAULT_BRANCH}..."
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git checkout -B "$DEFAULT_BRANCH" "$REMOTE_SHA"
+            git revert --no-edit HEAD
+            git push origin HEAD:"$DEFAULT_BRANCH"
+          else
+            echo "Remote HEAD is not the release commit; no revert needed."
+          fi
