@@ -112,6 +112,7 @@ jobs:
           fi
 
       - name: Publish to Visual Studio Marketplace
+        id: publish
         run: |
           set -o pipefail
           MAX_ATTEMPTS=3
@@ -143,7 +144,7 @@ jobs:
           done
 
       - name: Cleanup on publish failure
-        if: failure() && steps.meta.outputs.tag != ''
+        if: steps.publish.outcome == 'failure' && steps.meta.outputs.tag != ''
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
