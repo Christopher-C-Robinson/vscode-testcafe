@@ -2,7 +2,7 @@
     "name": "browser-tools-for-testcafe",
     "displayName": "Browser Tools for TestCafe",
     "description": "Browser Tools for TestCafe is a maintained VS Code extension for running TestCafe tests from the editor, Explorer, and command palette with browser detection, custom browser flags, and debugging support",
-    "version": "3.0.3",
+    "version": "3.0.4",
     "publisher": "ChristopherCRobinson",
     "icon": "images/icon.png",
     "license": "MIT",
