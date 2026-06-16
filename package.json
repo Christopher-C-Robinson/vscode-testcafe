@@ -492,7 +492,7 @@
         "@types/node": "^25.5.2",
         "@types/vscode": "^1.110.0",
         "@vscode/vsce": "^3.7.1",
-        "esbuild": "^0.28.0",
+        "esbuild": "^0.28.1",
         "typescript": "^6.0.2"
     },
     "repository": {
