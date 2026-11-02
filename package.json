@@ -489,7 +489,7 @@
         "testcafe-browser-tools": "^2.0.26"
     },
     "devDependencies": {
-        "@types/node": "^26.1.0",
+        "@types/node": "^26.6.6",
         "@types/vscode": "^1.110.0",
         "@vscode/vsce": "^3.9.2",
         "esbuild": "^0.28.2",
