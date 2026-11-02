@@ -7,6 +7,10 @@ updates:
     open-pull-requests-limit: 10
     labels:
       - dependencies
+    ignore:
+      # @types/vscode must not exceed engines.vscode or vsce packaging fails.
+      # Bump it together with engines.vscode when raising the minimum VS Code version.
+      - dependency-name: "@types/vscode"
 
   - package-ecosystem: github-actions
     directory: "/"
